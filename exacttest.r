@@ -1,4 +1,4 @@
-#################2019-03-08######################
+#################2019-03-08######
 ##fisher-exact test##############
 #################################
 AR<-read.delim("DNA_sv_AR.txt")
@@ -13,7 +13,7 @@ for (i in 1:length(samples)){
 samples_pos<-as.character(AR$sample_id) #unique id 23
 samples_neg<-dplyr::setdiff(samples_all,samples_pos) #78
 
-##FUNCTION FOR ALL VARIATION FISHER EXACT TEST########################################################################
+##FUNCTION FOR ALL VARIATION FISHER EXACT TEST#################################
 exact.test<-function(gene.name,gain,loss) {
 cngene<-cn[cn$IDENTIFIER==gene.name,]
 cngene<-cngene[,-1]
@@ -63,13 +63,11 @@ write.table(df,"var.fisher.txt",quote=FALSE,col.names = TRUE,row.names = FALSE,s
 ##############################
 fdr<-read.csv("var.fisher.csv",header=TRUE,sep=",")
 fdr$fdr<-p.adjust(fdr$p.value,method="fdr",n=length(fdr$p.value))
+##PTEN is not significant any more after adjustment.
+##adj.p=1 for all genes.
 
 
-
-
-
-
-
+##2019-03-08##
 ##pathway exact test#####################################################
 #ETS alterations: ERG+ETV1+ETV4+ETV5
 #RAS pathway: BRAF+HRAS
