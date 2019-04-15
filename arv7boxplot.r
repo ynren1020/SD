@@ -46,7 +46,9 @@ my_comparisons <- list( c("AR_V7 negtive", "AR_V7 positive (high)"), c("AR_V7 po
 p1<-p + stat_compare_means(comparisons = my_comparisons)+ # Add pairwise comparisons p-value
   stat_compare_means(label.y = 300)    #global pvalue position
 
-
+##change tick mark labels##
+p2<-p1+scale_x_discrete(labels=c("AR_V7 negtive" = "AR_V7 negtive\n(N=37)", "AR_V7 positive (high)" = "AR_V7 positive (high)\n(N=27)",
+                                 "AR_V7 positive (low)" = "AR_V7 positive (low)\n(N=26)"))
 
 
 
