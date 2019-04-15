@@ -36,37 +36,45 @@ write.table(exn_low,"exn_low.txt",quote=FALSE,col.names = FALSE,row.names = FALS
 ##AR##
 genemat <- matrix(c(20, 21,17, 16), nrow = 2,
                   dimnames =
-                    list(c("var.low", "var.high"), 
-                         c("sv.mut", "sv.nomut")))
-
+                    list(c("TACSTD1.low", "TACSTD1.high"), 
+                         c("AR.mut", "AR.nomut")))
+AR<-as.data.frame(genemat)
+write.table(AR,"AR.fisher.txt",sep="\t",quote=FALSE,col.names = TRUE,row.names = TRUE)
 ##matrix look like this:
 #           sv.mut sv.nomut
-#var.low       4       33
-#var.high      7       30
+#var.low       20       17
+#var.high      21       16
 
 p.val<-fisher.test(genemat, alternative = "two.sided")$p.value #1
 
 ##TP53##
 genemat <- matrix(c(12, 13,25, 24), nrow = 2,
                   dimnames =
-                    list(c("var.low", "var.high"),
-                         c("sv.mut", "sv.nomut")))
+                    list(c("TACSTD1.low", "TACSTD1.high"),
+                         c("TP53.mut", "TP53.nomut")))
+TP53<-as.data.frame(genemat)
+write.table(TP53,"TP53.fisher.txt",sep="\t",quote=FALSE,col.names = TRUE,row.names = TRUE)
 
 p.val<-fisher.test(genemat, alternative = "two.sided")$p.value #1
 
 ##PTEN##
 genemat <- matrix(c(5, 7,32, 30), nrow = 2,
                   dimnames =
-                    list(c("var.low", "var.high"),
-                         c("sv.mut", "sv.nomut")))
+                    list(c("TACSTD1.low", "TACSTD1.high"),
+                         c("PTEN.mut", "PTEN.nomut")))
+PTEN<-as.data.frame(genemat)
+write.table(PTEN,"PTEN.fisher.txt",sep="\t",quote=FALSE,col.names = TRUE,row.names = TRUE)
+
 
 p.val<-fisher.test(genemat, alternative = "two.sided")$p.value #0.75
 
 ##RB1##
 genemat <- matrix(c(4, 7,33, 30), nrow = 2,
                   dimnames =
-                    list(c("var.low", "var.high"),
-                         c("sv.mut", "sv.nomut")))
+                    list(c("TACSTD1.low", "TACSTD1.high"),
+                         c("RB1.mut", "RB1.nomut")))
+RB1<-as.data.frame(genemat)
+write.table(RB1,"RB1.fisher.txt",sep="\t",quote=FALSE,col.names = TRUE,row.names = TRUE)
 
 p.val<-fisher.test(genemat, alternative = "two.sided")$p.value #0.51
 
