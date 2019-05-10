@@ -63,15 +63,43 @@ p2 <- ggplot(data = v1v2_t.m_long, aes(x = condition, y = RPKM, group = sampleid
   #coord_trans(y="log10", limy=c(1000,6000)) +
   labs(y = "TACSTD2 (RPKM)") + 
   geom_line(size=0.5,alpha=0.5) + theme(legend.position="none")
+  
+
+########2019-05-10################
+##boxplot with paired line########
+##facet_wrap by responder or not##
+
+input<-"tier2.info.txt"
+respond<-read.delim(input,header = TRUE,check.names = FALSE,stringsAsFactors = FALSE)
+respond<-respond[,c(7,16)]
+v1v2_t.m_long.join<-full_join(v1v2_t.m_long,respond,by=c("sampleid"="sample_id"))
+v1v2_t.m_long.join<-na.omit(v1v2_t.m_long.join)
+nrow(v1v2_t.m_long.join[v1v2_t.m_long.join$condition=="Week 12",]) #63
+nrow(v1v2_t.m_long.join[v1v2_t.m_long.join$composite_progression==0,]) #74
+nrow(v1v2_t.m_long.join[v1v2_t.m_long.join$composite_progression==1,]) #52
+
+for (i in 1:nrow(v1v2_t.m_long.join)){
+  v1v2_t.m_long.join$type[i]<-ifelse(v1v2_t.m_long.join$composite_progression[i]==0,"Responder (N=37)","Non-responder (N=26)")
+}
+
+p<-ggpaired(v1v2_t.m_long.join, x = "condition", y = "RPKM",
+         color = "condition", line.color ="gray", line.size = 0.4,
+         palette = "npg")+
+         stat_compare_means(paired = TRUE,label.y = 210)+
+         facet_wrap(~type)+
+         labs(y = "TACSTD2 (RPKM)")
+
+# Use only p.format as label. Remove method name.
+p + stat_compare_means(label = "p.format", paired = TRUE)
 
 
-
-
-
-
-
-
-
+##without boxplot##
+p2 <- ggplot(data = v1v2_t.m_long.join, aes(x = condition, y = RPKM, group = sampleid)) +
+  mytheme +
+  #coord_trans(y="log10", limy=c(1000,6000)) +
+  labs(y = "TACSTD2 (RPKM)") + 
+  geom_line(size=0.5,alpha=0.5) + theme(legend.position="none")+
+  facet_wrap(~type)
 
 
 
