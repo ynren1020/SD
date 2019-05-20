@@ -13,7 +13,7 @@ klf5T<-transpose(klf5)
 rownames(klf5T) <- colnames(klf5)
 colnames(klf5T) <- rownames(klf5)
 klf5T$sample_id<-rownames(klf5T)
-klf5T<-klf5T[-1,]%>%rename("RPKM"="7137") #is it RPKM
+klf5T<-klf5T[-1,]%>%rename("RPKM"="7137") #is it RPKM? it is TPM
 
 for (i in 1:nrow(klf5T)){
   klf5T$sample[i]<-str_replace_all(klf5T$sample_id[i],'[.]',"-")
@@ -32,22 +32,28 @@ for (i in 1:nrow(klf5T_tr)){
 
 klf5T_tr$status<-as.factor(klf5T_tr$status)
 klf5T_tr$RPKM<-as.numeric(klf5T_tr$RPKM)
-nrow(klf5T_tr[klf5T_tr$status=="Naive",])#35
+nrow(klf5T_tr[klf5T_tr$status=="Naive",])#36
 nrow(klf5T_tr[klf5T_tr$status=="Treated",])#63
+
 
 ##plot##
 p <- ggboxplot(klf5T_tr, x = "status", y = "RPKM",
                color = "status", palette =c("#00AFBB", "#E7B800"),
                add = "jitter", shape = "status",
                xlab=FALSE,
-               ylab="KLF5 expressoin (RPKM)")
+               ylab="KLF5 expressoin (TPM)")
 p
 
 
 # Add p-values comparing groups
-p1<-p + stat_compare_means(label.y = 200)+ # Add p-value
+p1<-p + stat_compare_means(label.y = 200) # Add p-value
   ##change tick mark labels##
-p2<-p1+scale_x_discrete(labels=c("Naive" = "Naive\n(N=35)", "Treated" = "Treated\n(N=63)"))
+p2<-p1+scale_x_discrete(labels=c("Naive" = "Naive\n(N=36)", "Treated" = "Treated\n(N=63)"))
 p2
 
 ggsave("klf5boxplot.pdf",width = 5,height = 5)
+
+##data##
+klf5T_tr<-klf5T_tr%>%rename("TPM"="RPKM")
+klf5T_tr<-klf5T_tr[,c(2,1,3:5)]
+write.table(klf5T_tr,"KLF5_boxplot.txt",quote = FALSE,col.names = TRUE,row.names = FALSE,sep = "\t")
