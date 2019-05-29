@@ -93,3 +93,39 @@ p <- ggboxplot(df, x = "group", y = "V1",
 p
 
 
+##############2019-05-29#################################################
+##Look for unique exitrons (genes) in 20genes mutation or not group######
+##find out the shared exitrons (genes) in 20genes mutation or not group##
+#########################################################################
+prad.mut<-read.delim("prad.mut.allsamples.exitron.0529.txt",header = FALSE,stringsAsFactors = FALSE)
+prad.nomut<-read.delim("prad.nomut.allsamples.exitron.0529.txt",header = FALSE,stringsAsFactors = FALSE)
+
+prad.mut<-unite(prad.mut,"coord",c("V1","V2","V3","V6"),sep=":")
+prad.nomut<-unite(prad.nomut,"coord",c("V1","V2","V3","V6"),sep=":")
+
+##unique corrd##
+prad.mut.exitronU<-unique(prad.mut$coord) #3227
+prad.nomut.exitronU<-unique(prad.nomut$coord) #14413
+ 
+shared.exitron<-intersect(prad.mut.exitronU,prad.nomut.exitronU) #2167
+prad.mut.exitronUfinal<-setdiff(prad.mut.exitronU,shared.exitron) #1060
+prad.nomut.exitronUfinal<-setdiff(prad.nomut.exitronU,shared.exitron) #12246
+write.table(shared.exitron,"prad.mutNomut.sharedexitron.txt",quote = FALSE,col.names = FALSE,row.names = FALSE,sep="\t")
+write.table(prad.mut.exitronUfinal,"prad.mut.exitronUnique.txt",quote = FALSE,col.names = FALSE,row.names = FALSE,sep="\t")
+write.table(prad.nomut.exitronUfinal,"prad.nomut.exitronUnique.txt",quote = FALSE,col.names = FALSE,row.names = FALSE,sep="\t")
+
+
+##unique genes##
+prad.mut.genes<-unique(prad.mut$V7) #1760
+prad.nomut.genes<-unique(prad.nomut$V7) #4806
+
+shared.genes<-intersect(prad.mut.genes,prad.nomut.genes) #1545
+prad.mut.genesU<-setdiff(prad.mut.genes,shared.genes) #215
+prad.nomut.genesU<-setdiff(prad.nomut.genes,shared.genes) #3261
+
+
+write.table(shared.genes,"prad.mutNomut.sharedgenes.txt",quote = FALSE,col.names = FALSE,row.names = FALSE,sep="\t")
+write.table(prad.mut.genesU,"prad.mut.genesUnique.txt",quote = FALSE,col.names = FALSE,row.names = FALSE,sep="\t")
+write.table(prad.nomut.genesU,"prad.nomut.genesUnique.txt",quote = FALSE,col.names = FALSE,row.names = FALSE,sep="\t")
+
+
